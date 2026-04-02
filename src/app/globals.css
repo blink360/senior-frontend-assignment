@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  @apply antialiased;
+}
+
+/* Base UI Styles */
+.card {
+  @apply bg-white rounded-xl shadow-sm border border-slate-200 p-6;
+}
+
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all focus:ring-2 focus:ring-offset-2 active:scale-[0.98];
+}
+
+.btn-primary {
+  @apply bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500 shadow-sm border-indigo-700/10;
+}
+
+.btn-outline {
+  @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus:ring-slate-200;
+}
