@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-dialog": "latest",
     "@radix-ui/react-popover": "latest",
     "@radix-ui/react-select": "latest",
