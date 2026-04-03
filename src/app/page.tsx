@@ -17,18 +17,22 @@ import {
 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import SplitExpenseModal from "./components/SplitExpenseModal";
+import DataChart from "./components/DataChart";
 
 export default function ExpensesDashboard() {
   const queryClient = useQueryClient();
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const [showExpenseModal, setShowExpenseModal] = useState<boolean>(false);
+  const [showGraph, setShowGraph] = useState<boolean>(false);
 
   // Data Fetching
   const { data: expenses = [], isLoading } = useQuery({
     queryKey: ["expenses"],
     queryFn: fetchExpenses,
   });
+
+  console.log(expenses);
 
   // Task 3 Starting Point: Standard sequential update
   const approveMutation = useMutation({
@@ -65,7 +69,7 @@ export default function ExpensesDashboard() {
           </div>
 
           <div className="flex gap-3">
-            <button className="btn btn-outline flex items-center gap-2">
+            <button className="btn btn-outline flex items-center gap-2" onClick={() => { setShowGraph(!showGraph) }}>
               <BarChart3 className="w-4 h-4" /> View Insights
             </button>
             <button className="btn btn-primary flex items-center gap-2 shadow-indigo-100" onClick={() => { !showExpenseModal && setShowExpenseModal(true) }} >
@@ -74,7 +78,7 @@ export default function ExpensesDashboard() {
           </div>
         </header>
 
-        {/* Task 2: Spend Analysis Chart (Mock placeholder) */}
+        {showGraph && <DataChart expenses={expenses} />}
 
         <div className="grid grid-cols-12 gap-6">
           {/* Analytics Summary */}
@@ -163,7 +167,7 @@ export default function ExpensesDashboard() {
                       </td>
                     </tr>
                   ) : (
-                    expenses.map((expense) => (
+                    expenses.filter(item => item.status === 'pending').map((expense) => (
                       <tr
                         key={expense.id}
                         className={`hover:bg-slate-50/50 transition-colors ${selectedIds.has(expense.id) ? "bg-indigo-50/30" : ""}`}

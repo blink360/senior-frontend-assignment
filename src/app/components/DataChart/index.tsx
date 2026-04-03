@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Expense } from '@/services/api.mock';
 import { aggregateGraphDataByMonth, aggregateGraphDataByYear } from '@/app/utils/graph';
-import AnnualChart from './AnnualChart';
+import AnnualChart from '@/app/components/DataChart/AnnualChart';
 import MonthlyChart from './MonthlyChart';
 
 type ChartView = 'annual' | 'monthly';
@@ -21,6 +21,8 @@ const DataChart = ({ expenses }: IDataChartProps) => {
         aggregateGraphDataByYear(expenses)
         , [expenses])
 
+    console.log(annualGraphData);
+    
     const monthlyGraphData = useMemo(() =>
         aggregateGraphDataByMonth(expenses)
         , [expenses])
@@ -30,6 +32,7 @@ const DataChart = ({ expenses }: IDataChartProps) => {
             <div className="flex gap-2">
                 {['annual', 'monthly'].map((item: string) =>
                     <button
+                        key={item}
                         onClick={() => setView(item as ChartView)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
                              ${view === item

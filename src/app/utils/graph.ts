@@ -19,8 +19,6 @@ export const aggregateGraphDataByYear = (
   const yearlyMap = new Map<number, IAnnualGraphData>();
 
   for (const expense of expenses) {
-    if (expense.status !== "approved") continue;
-
     const year = new Date(expense.date).getFullYear();
 
     if (!yearlyMap.has(year)) {
@@ -51,8 +49,6 @@ export const aggregateGraphDataByMonth = (expenses: Expense[]): IMonthlyGraphDat
   const monthlyTotals = new Map<string, number>();
 
   for (const expense of expenses) {
-    if (expense.status !== "approved") continue;
-
     const date = new Date(expense.date);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -103,3 +99,67 @@ export const aggregateGraphDataByMonth = (expenses: Expense[]): IMonthlyGraphDat
 
   return results;
 };
+
+
+const TITLES = [
+  'Dinner with Client',
+  'Uber to Airport',
+  'WeWork Pass',
+  'Figma Subscription',
+  'AWS Hosting',
+  'Office Snacks',
+  'Team Lunch',
+  'Flight Booking',
+  'Hotel Stay',
+  'Conference Ticket',
+];
+
+const CATEGORIES = [
+  'Travel',
+  'Software',
+  'Meals',
+  'Office Supplies',
+  'Entertainment',
+];
+
+const EMPLOYEES = [
+  'Jane Doe',
+  'John Smith',
+  'Alice Johnson',
+  'Bob Brown',
+  'Emily Davis',
+];
+
+const STATUSES: Expense['status'][] = [
+  'pending',
+  'approved',
+  'rejected',
+];
+
+const getRandomDate = () => {
+  const now = Date.now();
+  const fiveYearsAgo = now - 5 * 365 * 24 * 60 * 60 * 1000;
+
+  const randomTime =
+    fiveYearsAgo + Math.random() * (now - fiveYearsAgo);
+
+  return new Date(randomTime).toISOString();
+};
+
+export const INITIAL_DATA: Expense[] = Array.from(
+  { length: 200 },
+  (_, i) => ({
+    id: `exp-${i + 1}`,
+    title: TITLES[i % TITLES.length],
+    amount: Number(
+      (Math.random() * 1000 + 20).toFixed(2)
+    ), 
+    status:
+      STATUSES[Math.floor(Math.random() * STATUSES.length)],
+    category:
+      CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)],
+    employee:
+      EMPLOYEES[Math.floor(Math.random() * EMPLOYEES.length)],
+    date: getRandomDate(),
+  })
+);

@@ -4,6 +4,8 @@
  * test handling of real-world networking scenarios.
  */
 
+import { INITIAL_DATA } from "@/app/utils/graph";
+
 export interface Expense {
   id: string;
   title: string;
@@ -13,23 +15,6 @@ export interface Expense {
   employee: string;
   date: string;
 }
-
-const INITIAL_DATA: Expense[] = Array.from({ length: 20 }, (_, i) => ({
-  id: `exp-${i + 1}`,
-  title: [
-    'Dinner with Client', 
-    'Uber to Airport', 
-    'WeWork Pass', 
-    'Figma Subscription', 
-    'AWS Hosting', 
-    'Office Snacks'
-  ][i % 6],
-  amount: Math.floor(Math.random() * 500) + 10,
-  status: 'pending',
-  category: ['Travel', 'Software', 'Meals', 'Office Supplies'][i % 4],
-  employee: ['Jane Doe', 'John Smith', 'Alice Johnson'][i % 3],
-  date: new Date(Date.now() - i * 86400000).toISOString(),
-}));
 
 export const fetchExpenses = async (): Promise<Expense[]> => {
   await new Promise(resolve => setTimeout(resolve, 600)); // Network delay
