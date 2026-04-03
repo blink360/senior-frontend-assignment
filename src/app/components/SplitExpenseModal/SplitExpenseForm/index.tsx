@@ -37,9 +37,9 @@ const SplitExpenseForm = ({ id, amount, onSuccess }: ISplitExpenseFormProps) => 
         name: "splits",
     });
 
-    const watchSplits = useWatch({control, name: "splits"});
+    const watchSplits = useWatch({ control, name: "splits" });
 
-    const { remainingAmount, remainingCents, isBalanced, isOver } = useSplitExpense(watchSplits, amount);
+    const { remainingAmount, isBalanced, isOver, amountInCents } = useSplitExpense(watchSplits, amount);
 
     useEffect(() => {
         const key = `split-expense-store`;
@@ -76,7 +76,8 @@ const SplitExpenseForm = ({ id, amount, onSuccess }: ISplitExpenseFormProps) => 
                     })
                 )
             );
-            removeItemFromLocalStorage('split-expense-store')
+            removeItemFromLocalStorage('split-expense-store');
+            removeItemFromLocalStorage('spit-expense-details')
             toast.success(`Split into ${data.splits.length} expenses`);
             onSuccess?.();
         } catch {
@@ -89,7 +90,6 @@ const SplitExpenseForm = ({ id, amount, onSuccess }: ISplitExpenseFormProps) => 
     }
 
     const handleQuickSplit = () => {
-        const amountInCents = Math.round(amount * 100);
         const numberOfSplits = fields.length;
         const baseShare = Math.floor(amountInCents / numberOfSplits);
         const remainder = amountInCents % numberOfSplits;
@@ -101,21 +101,21 @@ const SplitExpenseForm = ({ id, amount, onSuccess }: ISplitExpenseFormProps) => 
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <RemainingBalance remainingAmount={remainingAmount} remainingCents={remainingCents} isBalanced={isBalanced} isOver={isOver} amount={amount} />
+            <RemainingBalance remainingAmount={remainingAmount} isBalanced={isBalanced} isOver={isOver} amount={amount} />
             <div className="flex justify-between items-center mb-4">
-                <button
-                    type="button"
-                    onClick={handleQuickSplit}
-                    className="btn btn-outline flex items-center gap-2 text-sm"
-                >
-                    Split
-                </button>
                 <button
                     type="button"
                     onClick={handleAddRow}
                     className="btn btn-outline flex items-center gap-2 text-sm"
                 >
                     <Plus className="w-4 h-4" /> Add Row
+                </button>
+                <button
+                    type="button"
+                    onClick={handleQuickSplit}
+                    className="btn btn-outline flex items-center gap-2 text-sm"
+                >
+                    Split
                 </button>
             </div>
             <div className="flex flex-col gap-3">

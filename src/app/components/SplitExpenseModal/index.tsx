@@ -2,8 +2,10 @@
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SplitExpenseForm from './SplitExpenseForm';
+import { getItemFromLocalStorage, removeItemFromLocalStorage, storeItemInLocalStorage } from '@/app/utils/storage';
+import { formatCurrency } from '@/app/utils/currency';
 
 interface ISplitExpenseModal {
     show: boolean;
@@ -17,6 +19,25 @@ interface ExpenseDetails {
 
 const SplitExpenseModal = ({ show, setShow }: ISplitExpenseModal) => {
     const [details, setDetails] = useState<ExpenseDetails | null>(null);
+
+    useEffect(() => {
+        if (show) {
+            const stored = getItemFromLocalStorage('split-expense-details');
+            if (stored) {
+                try { setDetails(stored); }
+                catch { setDetails(null); }
+            } else {
+                setDetails(null);
+            }
+        }
+    }, [show]);
+
+    useEffect(() => {
+        if (details) {
+            storeItemInLocalStorage('split-expense-details', JSON.stringify(details))
+        }
+    }, [details])
+
     const [title, setTitle] = useState('');
     const [amount, setAmount] = useState('');
 
@@ -47,7 +68,7 @@ const SplitExpenseModal = ({ show, setShow }: ISplitExpenseModal) => {
                             </Dialog.Title>
                             <Dialog.Description className="text-slate-500 mt-1">
                                 {details
-                                    ? `$${details.amount.toFixed(2)}`
+                                    ? `${formatCurrency(details.amount)}`
                                     : '$0.00'}
                             </Dialog.Description>
                         </div>
@@ -63,7 +84,6 @@ const SplitExpenseModal = ({ show, setShow }: ISplitExpenseModal) => {
                                 <input
                                     value={title}
                                     onChange={e => setTitle(e.target.value)}
-                                    placeholder="e.g. AWS Hosting"
                                     className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 />
                             </div>
@@ -76,7 +96,6 @@ const SplitExpenseModal = ({ show, setShow }: ISplitExpenseModal) => {
                                     type="number"
                                     min="0.01"
                                     step="0.01"
-                                    placeholder="0.00"
                                     className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 />
                             </div>
@@ -99,6 +118,18 @@ const SplitExpenseModal = ({ show, setShow }: ISplitExpenseModal) => {
                         />
                     )}
 
+                    {details &&
+                        <button
+                            onClick={() => {
+                                setDetails(null);
+                                setTitle('');
+                                setAmount('');
+                                removeItemFromLocalStorage('split-expense-details')
+                            }}
+                            className="btn bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 mt-2"
+                        >
+                            Discard
+                        </button>}
                 </Dialog.Content>
             </Dialog.Portal>
         </Dialog.Root>

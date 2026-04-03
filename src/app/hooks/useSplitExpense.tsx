@@ -9,6 +9,7 @@ interface IUseSplitExpense {
   remainingAmount: number;
   isBalanced: boolean;
   isOver: boolean;
+  amountInCents: number;
 }
 
 const useSplitExpense = (
@@ -31,6 +32,7 @@ const useSplitExpense = (
       remainingAmount: Math.abs(remainingCents) / 100,
       isBalanced: remainingCents === 0,
       isOver: remainingCents < 0,
+      amountInCents
     };
   }, [splits, amount]);
 };
