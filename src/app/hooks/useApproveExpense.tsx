@@ -119,17 +119,8 @@ const useBatchApproveExpense = () => {
     const isFailed = (id: string) => getStatus(id) === 'failed';
 
     return {
-        state,
-        queuedItems,
-        processingItems,
-        succeededItems,
-        failedItems,
-        totalCount,
-        completedCount,
-        isActive: state.isActive,
         approveOne,
         approveBatch,
-        reset,
         isQueued,
         isProcessing,
         isSucceeded,
