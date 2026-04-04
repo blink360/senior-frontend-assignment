@@ -114,7 +114,7 @@ const TITLES = [
   'Conference Ticket',
 ];
 
-const CATEGORIES = [
+export const CATEGORIES = [
   'Travel',
   'Software',
   'Meals',

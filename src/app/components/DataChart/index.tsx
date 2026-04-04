@@ -21,14 +21,16 @@ const DataChart = ({ expenses }: IDataChartProps) => {
         aggregateGraphDataByYear(expenses)
         , [expenses])
 
-    console.log(annualGraphData);
-    
     const monthlyGraphData = useMemo(() =>
         aggregateGraphDataByMonth(expenses)
         , [expenses])
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6" aria-label={
+            view === 'annual'
+                ? `Annual expense chart`
+                : `Monthly expense chart}`
+        }>
             <div className="flex gap-2">
                 {['annual', 'monthly'].map((item: string) =>
                     <button

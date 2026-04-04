@@ -2,6 +2,7 @@ import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import { SplitExpenseFormData } from '@/app/schema/splitExpenseFormSchema';
 import { ExpenseCategories } from '@/app/components/SplitExpenseModal/SplitExpenseForm/index.d';
 import { Trash2 } from 'lucide-react';
+import { CATEGORIES } from '@/app/utils/graph';
 
 interface ISplitExpenseRowProps {
     index: number;
@@ -27,7 +28,7 @@ const SplitExpenseRow = ({
                     className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm bg-white"
                 >
                     <option value="">Select One</option>
-                    {['Travel', 'Software', 'Meals', 'Office Supplies'].map((value: string) => (
+                    {CATEGORIES.map((value: string) => (
                         <option key={value} value={value as ExpenseCategories}>{value}</option>
                     ))}
                 </select>

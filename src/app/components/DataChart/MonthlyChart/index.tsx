@@ -1,6 +1,7 @@
 import { IMonthlyGraphData } from "@/app/utils/graph";
 import { BarChart, Bar, CartesianGrid, ResponsiveContainer, XAxis, YAxis, ReferenceLine, Tooltip } from "recharts";
 import { motion } from 'framer-motion';
+import CustomTooltip from "./CustomTooltip";
 interface IMonthlyChartProps {
     data: IMonthlyGraphData[];
 }
@@ -56,7 +57,7 @@ const MonthlyChart = ({ data }: IMonthlyChartProps) => {
                         tickLine={false}
                         width={55}
                     />
-                    <Tooltip cursor={{ fill: '#f8fafc' }} />
+                    <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc' }} />
                     <Bar
                         dataKey="total"
                         radius={[4, 4, 0, 0]}
